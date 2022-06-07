@@ -85,6 +85,59 @@ export default class Inspector {
     }
   }
 
+  static async edit(
+    inspectorId: number,
+    data: {
+      firstName: string;
+      lastName: string;
+      displayName: string;
+      email: string;
+    }
+  ): Promise<boolean> {
+    const sql = `
+    UPDATE inspectors
+    SET first_name=$1, last_name=$2, display_name=$3, email=$4
+    WHERE id=$5
+    `;
+
+    try {
+      const result = await db.query(sql, [
+        data.firstName,
+        data.lastName,
+        data.displayName,
+        data.email,
+        inspectorId,
+      ]);
+
+      if (result.rowCount > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async delete(inspectorId: number): Promise<boolean> {
+    try {
+      const result = await db.query(
+        `
+      DELETE FROM inspectors WHERE id = $1
+      `,
+        [inspectorId]
+      );
+
+      if (result.rowCount > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   static async findAll(): Promise<IInspector[]> {
     try {
       const result = await db.query('SELECT * FROM inspectors');

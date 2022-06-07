@@ -84,6 +84,70 @@ export const createInspector = async (req: Request, res: Response) => {
   res.send({ success: false });
 };
 
+export const editInspector = async (req: Request, res: Response) => {
+  const inspectorId = parseInt(req.params.inspectorId);
+
+  // Finds the validation errors in this request and wraps them in an object
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    let response = {
+      err: {
+        firstName: '',
+        lastName: '',
+        email: '',
+      },
+      success: false,
+    };
+
+    for (const error of errors.array()) {
+      switch (error.param) {
+        case 'firstName':
+          response.err.firstName = error.msg;
+          break;
+
+        case 'lastName':
+          response.err.lastName = error.msg;
+          break;
+
+        case 'email':
+          response.err.email = error.msg;
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    res.send(response);
+    return;
+  }
+
+  // All input fields had valid values
+
+  const data: {
+    firstName: string;
+    lastName: string;
+    displayName: string;
+    email: string;
+  } = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    displayName: `${req.body.firstName} ${req.body.lastName}`,
+    email: req.body.email,
+  };
+
+  // Edit driver to the database
+  const result = await Inspector.edit(inspectorId, data);
+
+  if (result) {
+    res.send({ success: true });
+    return;
+  }
+
+  res.send({ success: false });
+};
+
 export const getAllInspectors = async (req: Request, res: Response) => {
   const inspectors = await Inspector.findAll();
   res.send(inspectors);
@@ -129,5 +193,11 @@ export const updatePassword = async (req: Request, res: Response) => {
     newPasswordHash
   );
 
+  res.send({ success: result });
+};
+
+export const deleteInspector = async (req: Request, res: Response) => {
+  const inspectorId = parseInt(req.params.inspectorId);
+  const result = await Inspector.delete(inspectorId);
   res.send({ success: result });
 };

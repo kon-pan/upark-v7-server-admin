@@ -1,6 +1,9 @@
 //NPM packages imports
 import express from 'express';
+
+// Validators
 import createInspectorValidator from '../../utils/validators/admin/forms/create-inspector.form.validator';
+import editInspectorValidator from '../../utils/validators/admin/forms/edit-inspector.form.validator';
 
 // Controllers imports
 import * as driverController from '../../controllers/driver/driver.controller';
@@ -50,5 +53,12 @@ router.post(
   createInspectorValidator,
   inspectorController.createInspector
 );
+router.post(
+  '/inspectors/update/:inspectorId',
+  editInspectorValidator,
+  inspectorController.editInspector
+);
+router.get('/delete/inspector/:inspectorId', inspectorController.deleteInspector);
+
 
 export { router as adminMainRouter };
