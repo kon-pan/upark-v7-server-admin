@@ -92,7 +92,7 @@ cron.schedule('*/10 * * * * *', async () => {
 
 const app = express();
 const server = http.createServer(app);
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4001;
 
 app.set('trust proxy', 1);
 /* -------------------------------------------------------------------------- */

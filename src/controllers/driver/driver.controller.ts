@@ -15,3 +15,9 @@ export const getDriversCount = async (req: Request, res: Response) => {
 
   res.send({ driversCount });
 };
+
+export const deleteDriver = async (req: Request, res: Response) => {
+  const driverId = parseInt(req.params.driverId);
+  const result = await Driver.delete(driverId);
+  res.send({ success: result });
+};

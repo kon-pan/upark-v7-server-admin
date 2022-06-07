@@ -101,4 +101,23 @@ export default class Driver {
         break;
     }
   }
+
+  static async delete(driverId: number): Promise<boolean> {
+    try {
+      const result = await db.query(
+        `
+      DELETE FROM drivers WHERE id = $1
+      `,
+        [driverId]
+      );
+
+      if (result.rowCount > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

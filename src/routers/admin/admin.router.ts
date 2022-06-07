@@ -44,6 +44,7 @@ router.get(
   '/get/cards-distribution/today',
   historyController.getCardsDistributionToday
 );
+router.get('/delete/driver/:driverId', driverController.deleteDriver);
 router.post(
   '/inspectors/create',
   createInspectorValidator,
