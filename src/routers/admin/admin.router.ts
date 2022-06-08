@@ -53,12 +53,17 @@ router.post(
   createInspectorValidator,
   inspectorController.createInspector
 );
+router.get(
+  '/delete/inspector/:inspectorId',
+  inspectorController.deleteInspector
+);
 router.post(
   '/inspectors/update/:inspectorId',
   editInspectorValidator,
   inspectorController.editInspector
 );
-router.get('/delete/inspector/:inspectorId', inspectorController.deleteInspector);
-
+router.post('/address/create', addressController.createAddress);
+router.post('/edit/address/:addressId', addressController.editAddress);
+router.get('/delete/address/:addressId', addressController.deleteAddress);
 
 export { router as adminMainRouter };
